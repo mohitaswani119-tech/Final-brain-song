@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unlock Your Brain's Hidden Potential</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d1a;
+    --cream: #f5f0e8;
+    --gold: #c9a84c;
+    --gold-light: #f0d98a;
+    --deep: #1a1035;
+    --accent: #7c4dff;
+    --accent2: #00e5ff;
+    --danger: #ff4757;
+    --glass: rgba(255,255,255,0.06);
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ink);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── STARFIELD BG ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, #1a0a3e 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, #0a1a3e 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 80%, #0d1a2e 0%, transparent 50%),
+                var(--ink);
+    z-index: -2;
+  }
+
+  /* ─── PAGES ─── */
+  .page { display: none; min-height: 100vh; padding: 40px 20px; animation: fadeUp 0.5s ease; }
+  .page.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .container { max-width: 680px; width: 100%; }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-wrap { width: 100%; max-width: 680px; margin-bottom: 32px; }
+  .progress-label { font-size: 13px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .progress-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); border-radius: 99px; transition: width 0.5s ease; }
+
+  /* ─── TYPOGRAPHY ─── */
+  .eyebrow { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  h1, h2 { font-family: 'Playfair Display', serif; }
+  h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.15; margin-bottom: 16px; }
+  h2 { font-size: clamp(1.4rem, 3.5vw, 2.2rem); font-weight: 700; line-height: 1.2; margin-bottom: 16px; }
+  .subtitle { font-size: 1.05rem; color: rgba(245,240,232,0.7); line-height: 1.6; margin-bottom: 32px; }
+
+  /* ─── GOLD BADGE ─── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 99px; padding: 8px 18px;
+    font-size: 13px; color: var(--gold-light); margin-bottom: 24px;
+  }
+  .badge::before { content: '⚡'; }
+
+  /* ─── QUIZ OPTIONS ─── */
+  .options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+  .option {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--glass);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius);
+    padding: 18px 20px; cursor: pointer;
+    transition: all 0.25s ease; position: relative; overflow: hidden;
+  }
+  .option:hover { border-color: var(--accent); background: rgba(124,77,255,0.1); transform: translateX(4px); }
+  .option.selected { border-color: var(--gold); background: rgba(201,168,76,0.12); }
+  .option-letter {
+    width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 14px; color: var(--gold);
+  }
+  .option-text { font-size: 0.95rem; line-height: 1.4; }
+  .option::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.05));
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .option:hover::after { opacity: 1; }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 16px 36px; border-radius: 99px; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
+    transition: all 0.3s ease; text-decoration: none; width: 100%;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), #5b2be8);
+    color: #fff; box-shadow: 0 12px 40px rgba(124,77,255,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 50px rgba(124,77,255,0.45); }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), #a87a2a);
+    color: var(--ink); box-shadow: 0 12px 40px rgba(201,168,76,0.35);
+  }
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 18px 50px rgba(201,168,76,0.5); }
+  .btn-danger {
+    background: linear-gradient(135deg, #ff4757, #c0392b);
+    color: #fff; box-shadow: 0 12px 40px rgba(255,71,87,0.35);
+  }
+  .btn-danger:hover { transform: translateY(-2px); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+  /* ─── RESULT CARD ─── */
+  .result-card {
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(124,77,255,0.08));
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 24px; padding: 40px 36px; text-align: center; margin-bottom: 32px;
+  }
+  .result-icon { font-size: 64px; margin-bottom: 16px; }
+  .result-type { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--gold); margin-bottom: 8px; }
+  .result-score { font-size: 14px; color: rgba(245,240,232,0.5); margin-bottom: 24px; }
+  .result-desc { font-size: 1rem; line-height: 1.7; color: rgba(245,240,232,0.8); }
+
+  /* ─── REVEAL TEASER ─── */
+  .teaser-box {
+    background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.2);
+    border-radius: var(--radius); padding: 24px; margin-bottom: 28px;
+  }
+  .teaser-box h3 { font-family: 'Playfair Display', serif; color: var(--accent2); margin-bottom: 10px; font-size: 1.2rem; }
+  .teaser-box p { font-size: 0.9rem; line-height: 1.65; color: rgba(245,240,232,0.7); }
+  .blur-text { filter: blur(5px); user-select: none; color: var(--gold-light); font-weight: 600; }
+
+  /* ─── BRIDGE / COUNTDOWN ─── */
+  .countdown-wrap { text-align: center; margin-bottom: 28px; }
+  .countdown-ring { position: relative; display: inline-block; width: 80px; height: 80px; }
+  .countdown-num {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--gold);
+  }
+  circle { transition: stroke-dashoffset 1s linear; }
+
+  .urgency-bar {
+    background: rgba(255,71,87,0.1); border: 1px solid rgba(255,71,87,0.3);
+    border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; gap: 12px;
+    margin-bottom: 28px; font-size: 0.9rem;
+  }
+  .urgency-bar::before { content: '🔥'; font-size: 1.2rem; }
+
+  .benefit-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+  .benefit-list li {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 0.92rem; color: rgba(245,240,232,0.8); line-height: 1.5;
+  }
+  .benefit-list li::before { content: '✦'; color: var(--gold); flex-shrink: 0; margin-top: 2px; }
+
+  /* ─── EMAIL MODAL ─── */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+    z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.open { display: flex; animation: fadeUp 0.35s ease; }
+  .modal {
+    background: linear-gradient(145deg, #1a1035, #0d0d1a);
+    border: 1px solid rgba(201,168,76,0.3); border-radius: 24px;
+    padding: 44px 40px; max-width: 460px; width: 100%; text-align: center;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 16px; right: 20px; background: none; border: none;
+    color: rgba(255,255,255,0.3); font-size: 22px; cursor: pointer;
+  }
+  .modal-close:hover { color: rgba(255,255,255,0.7); }
+  .modal h2 { font-size: 1.7rem; margin-bottom: 10px; }
+  .modal p { font-size: 0.9rem; color: rgba(245,240,232,0.65); margin-bottom: 28px; line-height: 1.6; }
+
+  .form-group { margin-bottom: 14px; }
+  .form-group input {
+    width: 100%; padding: 14px 18px; border-radius: 12px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+    outline: none; transition: border-color 0.2s;
+  }
+  .form-group input::placeholder { color: rgba(245,240,232,0.35); }
+  .form-group input:focus { border-color: var(--gold); }
+  .privacy { font-size: 11px; color: rgba(245,240,232,0.3); margin-top: 12px; line-height: 1.5; }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: #1e1e2e; border: 1px solid rgba(201,168,76,0.4); border-radius: 12px;
+    padding: 14px 24px; font-size: 14px; z-index: 2000;
+    transition: transform 0.4s ease; white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ─── SPLASH / LANDING ─── */
+  .hero-glow {
+    width: 260px; height: 260px; border-radius: 50%; margin: 0 auto 32px;
+    background: radial-gradient(circle, rgba(124,77,255,0.3) 0%, rgba(201,168,76,0.1) 50%, transparent 70%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 96px; animation: pulse 3s ease-in-out infinite;
+    position: relative;
+  }
+  .hero-glow::after {
+    content: '';
+    position: absolute; inset: -20px; border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.15);
+    animation: ringPulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+  @keyframes ringPulse { 0%,100%{opacity:0.15;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.08)} }
+
+  .disclaimer {
+    font-size: 11px; color: rgba(245,240,232,0.3); text-align: center;
+    margin-top: 16px; line-height: 1.6; max-width: 500px;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider { height: 1px; background: rgba(255,255,255,0.07); margin: 24px 0; }
+
+  @media (max-width: 480px) {
+    .modal { padding: 32px 22px; }
+    .result-card { padding: 28px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════ PAGE 0: LANDING ════════════════════════════════ -->
+<div class="page active" id="page-0">
+  <div class="container" style="text-align:center;">
+    <div class="hero-glow">🧠</div>
+    <div class="badge">Only 3% of people know this</div>
+    <h1>Is Your Brain Running at<br><em>Full Power?</em></h1>
+    <p class="subtitle">Scientists have discovered a silent frequency that determines your memory, focus, and mental clarity — and most people have no idea theirs is off-balance.<br><br>Take the 60-second assessment to find out <strong>your brain's current performance level.</strong></p>
+    <button class="btn btn-gold" onclick="startQuiz()" style="max-width:360px;margin:0 auto;">
+      ⚡ Start My Free Brain Assessment
+    </button>
+    <p class="disclaimer">This quiz is for informational and educational purposes only. Results are personalized insights, not medical advice. No purchase required to complete assessment.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ QUIZ PAGES ════════════════════════════════ -->
+
+<!-- Q1 -->
+<div class="page" id="page-q1">
+  <div class="progress-wrap">
+    <div class="progress-label">Question 1 of 5</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+  </div>
+  <div class="container">
+    <div class="eyebrow">Brain Performance Test</div>
+    <h2>How would you describe your memory on a typical day?</h2>
+    <div class="options" id="opts-q1">
+      <div class="option" onclick="selectOption(this,'q1',0)"><div class="option-letter">A</div><div class="option-text">Sharp — I rarely forget names, tasks, or details</div></div>
+      <div class="option" onclick="selectOption(this,'q1',1)"><div class="option-letter">B</div><div class="option-text">Decent — I forget occasionally but nothing major</div></div>
+      <div class="option" onclick="selectOption(this,'q1',2)"><div class="option-letter">C</div><div class="option-text">Foggy — I lose track of things more than I'd like</div></div>
+      <div class="option" onclick="selectOption(this,'q1',3)"><div class="option-letter">D</div><div class="option-text">Poor — I struggle to retain information consistently</div></div>
+    </div>
+    <button class="btn btn-primary" id="btn-q1" disabled onclick="nextQ(2)">Continue →</button>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="page" id="page-q2">
+  <div class="progress-wrap">
+    <div class="progress-label">Question 2 of 5</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+  </div>
+  <div class="container">
+    <div class="eyebrow">Brain Performance Test</div>
+    <h2>How often do you experience "brain fog" — that feeling of mental cloudiness or slow thinking?</h2>
+    <div class="options" id="opts-q2">
+      <div class="option" onclick="selectOption(this,'q2',0)"><div class="option-letter">A</div><div class="option-text">Rarely or never — my mind feels clear most of the time</div></div>
+      <div class="option" onclick="selectOption(this,'q2',1)"><div class="option-letter">B</div><div class="option-text">Occasionally — usually after poor sleep or long days</div></div>
+      <div class="option" onclick="selectOption(this,'q2',2)"><div class="option-letter">C</div><div class="option-text">Often — I feel sluggish mentally several times a week</div></div>
+      <div class="option" onclick="selectOption(this,'q2',3)"><div class="option-letter">D</div><div class="option-text">Almost always — I can barely think clearly anymore</div></div>
+    </div>
+    <button class="btn btn-primary" id="btn-q2" disabled onclick="nextQ(3)">Continue →</button>
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="page" id="page-q3">
+  <div class="progress-wrap">
+    <div class="progress-label">Question 3 of 5</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+  </div>
+  <div class="container">
+    <div class="eyebrow">Brain Performance Test</div>
+    <h2>How easily can you focus on a single task for 30+ minutes without getting distracted?</h2>
+    <div class="options" id="opts-q3">
+      <div class="option" onclick="selectOption(this,'q3',0)"><div class="option-letter">A</div><div class="option-text">Very easily — I can enter deep focus states effortlessly</div></div>
+      <div class="option" onclick="selectOption(this,'q3',1)"><div class="option-letter">B</div><div class="option-text">Mostly — I sometimes need to re-center but manage well</div></div>
+      <div class="option" onclick="selectOption(this,'q3',2)"><div class="option-letter">C</div><div class="option-text">With effort — distractions pull me off track regularly</div></div>
+      <div class="option" onclick="selectOption(this,'q3',3)"><div class="option-letter">D</div><div class="option-text">It feels almost impossible to concentrate for long</div></div>
+    </div>
+    <button class="btn btn-primary" id="btn-q3" disabled onclick="nextQ(4)">Continue →</button>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="page" id="page-q4">
+  <div class="progress-wrap">
+    <div class="progress-label">Question 4 of 5</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+  </div>
+  <div class="container">
+    <div class="eyebrow">Brain Performance Test</div>
+    <h2>How is your sleep quality? Do you wake up feeling mentally refreshed?</h2>
+    <div class="options" id="opts-q4">
+      <div class="option" onclick="selectOption(this,'q4',0)"><div class="option-letter">A</div><div class="option-text">Excellent — I wake up alert and energized most mornings</div></div>
+      <div class="option" onclick="selectOption(this,'q4',1)"><div class="option-letter">B</div><div class="option-text">Decent — some mornings are good, some not so much</div></div>
+      <div class="option" onclick="selectOption(this,'q4',2)"><div class="option-letter">C</div><div class="option-text">Poor — I usually wake up groggy and mentally slow</div></div>
+      <div class="option" onclick="selectOption(this,'q4',3)"><div class="option-letter">D</div><div class="option-text">Terrible — I feel exhausted even after a full night's sleep</div></div>
+    </div>
+    <button class="btn btn-primary" id="btn-q4" disabled onclick="nextQ(5)">Continue →</button>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="page" id="page-q5">
+  <div class="progress-wrap">
+    <div class="progress-label">Question 5 of 5</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  </div>
+  <div class="container">
+    <div class="eyebrow">Final Question</div>
+    <h2>What's the #1 thing you wish you could change about your brain performance?</h2>
+    <div class="options" id="opts-q5">
+      <div class="option" onclick="selectOption(this,'q5',0)"><div class="option-letter">A</div><div class="option-text">Better memory — I want to retain and recall things easily</div></div>
+      <div class="option" onclick="selectOption(this,'q5',1)"><div class="option-letter">B</div><div class="option-text">Sharper focus — I want laser-like concentration on demand</div></div>
+      <div class="option" onclick="selectOption(this,'q5',2)"><div class="option-letter">C</div><div class="option-text">More mental energy — I want to feel sharp all day long</div></div>
+      <div class="option" onclick="selectOption(this,'q5',3)"><div class="option-letter">D</div><div class="option-text">Faster thinking — I want my mind to process ideas quicker</div></div>
+    </div>
+    <button class="btn btn-gold" id="btn-q5" disabled onclick="showResult()">🔬 Analyze My Brain →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ RESULT PAGE ════════════════════════════════ -->
+<div class="page" id="page-result">
+  <div class="container">
+    <div class="eyebrow" style="text-align:center;">Your Brain Assessment Results</div>
+    <div class="result-card" id="result-card">
+      <div class="result-icon" id="result-icon">🧠</div>
+      <div class="result-type" id="result-type">Loading...</div>
+      <div class="result-score" id="result-score"></div>
+      <div class="result-desc" id="result-desc"></div>
+    </div>
+
+    <div class="teaser-box">
+      <h3>🔬 What Scientists Just Discovered...</h3>
+      <p>Researchers have identified a specific <strong>neural activation pattern</strong> used by people with exceptional recall, focus, and cognitive longevity — and it has nothing to do with supplements, nootropics, or hours of meditation.</p>
+      <p style="margin-top:10px;">The method is so simple it takes under <strong>7 minutes</strong>. The results? People are reporting:<br>
+      <span style="color:var(--gold-light);font-size:0.88rem;">
+        — <span class="blur-text">Memory improvements in days, not weeks</span><br>
+        — <span class="blur-text">Focus that lasts through the entire workday</span><br>
+        — <span class="blur-text">Mental clarity that feels like "turning on a light switch"</span>
+      </span></p>
+      <p style="margin-top:12px; font-size:0.85rem; color:rgba(245,240,232,0.5);">Full details revealed on the next page →</p>
+    </div>
+
+    <div class="urgency-bar">
+      <span>This personalized brain report is available for a limited time. Access expires soon.</span>
+    </div>
+
+    <button class="btn btn-gold" onclick="showBridge()">🧠 Reveal My Full Brain Report →</button>
+    <p class="disclaimer" style="margin-top:12px;">Results based on your quiz responses. For educational purposes only.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ BRIDGE PAGE ════════════════════════════════ -->
+<div class="page" id="page-bridge">
+  <div class="container">
+    <div class="eyebrow" style="text-align:center;">Your Personalized Solution Is Ready</div>
+    <h2 style="text-align:center;">The Ancient Secret Hiding in Plain Sight — Now Backed by Modern Neuroscience</h2>
+    <p class="subtitle" style="text-align:center;">For centuries, a small group of people used a specific sound frequency to unlock extraordinary mental performance. Today, neuroscientists know exactly why it works.</p>
+
+    <div class="countdown-wrap">
+      <p style="font-size:0.85rem; color:var(--gold); letter-spacing:1px; text-transform:uppercase; margin-bottom:12px;">⏰ Your report expires in</p>
+      <svg width="80" height="80" viewBox="0 0 80 80" class="countdown-ring">
+        <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4"/>
+        <circle id="timer-ring" cx="40" cy="40" r="34" fill="none" stroke="url(#grad)" stroke-width="4"
+          stroke-dasharray="213.6" stroke-dashoffset="0" stroke-linecap="round"
+          transform="rotate(-90 40 40)"/>
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#7c4dff"/>
+            <stop offset="100%" style="stop-color:#c9a84c"/>
+          </linearGradient>
+        </defs>
+        <text id="countdown-num" x="40" y="48" text-anchor="middle" fill="#c9a84c"
+          font-family="Playfair Display, serif" font-size="22" font-weight="700">10</text>
+      </svg>
+    </div>
+
+    <ul class="benefit-list">
+      <li>The 7-minute daily method that reactivates your brain's natural high-performance state</li>
+      <li>Why most "brain hacks" fail — and what actually works long-term</li>
+      <li>The frequency-based approach that top performers quietly use</li>
+      <li>How to experience measurable clarity improvements within your first session</li>
+      <li>The reason your brain fog is NOT your fault — and how to reverse it</li>
+    </ul>
+
+    <div class="urgency-bar" style="justify-content:center; text-align:center;">
+      <span>⚠️ Due to high demand, availability is strictly limited. Don't miss your window.</span>
+    </div>
+
+    <button class="btn btn-gold" id="bridge-cta" onclick="openEmailModal()" style="max-width:420px;margin:0 auto;">
+      🔓 Unlock My Free Brain Report Now
+    </button>
+    <p class="disclaimer" style="margin-top:14px;">Free access. Educational content only. You may be directed to additional resources that are affiliate-linked. We only recommend products we believe in.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ EMAIL MODAL ════════════════════════════════ -->
+<div class="modal-overlay" id="email-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div style="font-size:40px;margin-bottom:12px;">📬</div>
+    <h2>Where Should We Send<br>Your Brain Report?</h2>
+    <p>Enter your details below to instantly access your personalized cognitive enhancement guide — completely free.</p>
+    <div class="form-group">
+      <input type="text" id="fname" placeholder="Your First Name" />
+    </div>
+    <div class="form-group">
+      <input type="email" id="femail" placeholder="Your Best Email Address" />
+    </div>
+    <button class="btn btn-gold" onclick="submitEmail()" style="margin-bottom:0">
+      ✉️ Send Me My Free Report →
+    </button>
+    <p class="privacy">🔒 Your information is 100% private and secure. We respect your inbox and will never spam you. You can unsubscribe at any time. By submitting, you agree to receive educational content and product recommendations. This is not medical advice.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ TOAST ════════════════════════════════ -->
+<div class="toast" id="toast">✅ Success! Redirecting you now...</div>
+
+<script>
+// ─── STATE ───
+const answers = {};
+
+// ─── QUIZ LOGIC ───
+function startQuiz() {
+  showPage('page-q1');
+}
+
+function selectOption(el, qKey, val) {
+  document.querySelectorAll(`#opts-${qKey} .option`).forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[qKey] = val;
+  document.getElementById(`btn-${qKey}`).disabled = false;
+}
+
+function nextQ(n) {
+  showPage(`page-q${n}`);
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── RESULT LOGIC ───
+const results = [
+  {
+    icon: '🚀',
+    type: 'Peak Performer',
+    score: 'Your brain is operating at 85–100% capacity',
+    desc: 'Your cognitive baseline is strong. Memory, focus, and clarity are working in harmony. Yet even peak performers have a secret weapon they use to maintain and elevate their edge — and it\'s something almost no one knows about yet.'
+  },
+  {
+    icon: '⚡',
+    type: 'Latent Genius',
+    score: 'Your brain is operating at 60–84% capacity',
+    desc: 'You\'re doing well, but your brain is quietly underperforming. There\'s a gap between where you are and where you could be — and the reason isn\'t willpower, discipline, or intelligence. It\'s something entirely different that researchers have only recently uncovered.'
+  },
+  {
+    icon: '🌫️',
+    type: 'Foggy Potential',
+    score: 'Your brain is operating at 35–59% capacity',
+    desc: 'You\'re feeling the effects of a brain running below its natural baseline. The fog, the forgetfulness, the scattered focus — these are symptoms of something that can be corrected. And the solution is simpler than you\'d ever expect.'
+  },
+  {
+    icon: '⚠️',
+    type: 'Urgent Reset Needed',
+    score: 'Your brain is operating at under 35% capacity',
+    desc: 'Your brain is sending distress signals. But this is NOT permanent. What you\'re experiencing is increasingly common — and there is a clear, research-backed path to reversal. You\'re in the right place at the right time.'
+  }
+];
+
+function showResult() {
+  const score = Object.values(answers).reduce((a,b) => a+b, 0);
+  const idx = Math.min(Math.floor(score / 5), 3);
+  const r = results[idx];
+  document.getElementById('result-icon').textContent = r.icon;
+  document.getElementById('result-type').textContent = r.type;
+  document.getElementById('result-score').textContent = r.score;
+  document.getElementById('result-desc').textContent = r.desc;
+  showPage('page-result');
+}
+
+function showBridge() {
+  showPage('page-bridge');
+  startCountdown();
+}
+
+// ─── COUNTDOWN ───
+let countdownInterval;
+function startCountdown() {
+  let sec = 10;
+  const circle = document.getElementById('timer-ring');
+  const numEl  = document.getElementById('countdown-num');
+  const total  = 213.6;
+
+  clearInterval(countdownInterval);
+  countdownInterval = setInterval(() => {
+    sec--;
+    numEl.textContent = sec;
+    circle.style.strokeDashoffset = total - (total * sec / 10);
+    if (sec <= 0) {
+      clearInterval(countdownInterval);
+      numEl.textContent = '0';
+    }
+  }, 1000);
+}
+
+// ─── EMAIL MODAL ───
+function openEmailModal() {
+  document.getElementById('email-modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('email-modal').classList.remove('open');
+}
+
+// ─── SUBMIT EMAIL → GOOGLE SHEETS ───
+function submitEmail() {
+  const name  = document.getElementById('fname').value.trim();
+  const email = document.getElementById('femail').value.trim();
+
+  if (!name) { alert('Please enter your first name.'); return; }
+  if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzi3c9Egf1k21Y4jL6958uSmEGG1rQY0bfH0bzDXEtAa8Gsec3Zf3S2-YCoVxEqmF-h/exec';
+
+  // GET request with URL params — works from local Chrome file, no CORS issues
+  const params = new URLSearchParams({
+    name:        name,
+    email:       email,
+    timestamp:   new Date().toISOString(),
+    quiz_result: document.getElementById('result-type').textContent
+  });
+
+  // Image tag fires GET silently — bypasses all CORS restrictions
+  const img = new Image();
+  img.src = SHEET_URL + '?' + params.toString();
+
+  closeModal();
+  showToast();
+
+  // ══════════════════════════════════════════════════════
+  // 👇 REPLACE WITH YOUR CLICKBANK AFFILIATE LINK
+  setTimeout(() => {
+    window.location.href = 'YOUR_CLICKBANK_AFFILIATE_LINK_HERE';
+  }, 2200);
+  // ══════════════════════════════════════════════════════
+}
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+</script>
+</body>
+</html>
